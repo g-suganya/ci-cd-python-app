@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  annotations:
+    strategy.spinnaker.io/max-version-history: '2'
+  labels:
+    app: myapp
+    appdemo: myappdemo
+  name: demo-frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      appdemo: myappdemo
+  template:
+    metadata:
+      labels:
+        appdemo: myappdemo
+    spec:
+      containers:
+        - image: gcr.io/searce-academy/ci-cd-python-app:${trigger['tag']}
+          name: frontend
+          ports:
+          - containerPort: 5000
